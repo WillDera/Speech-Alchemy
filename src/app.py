@@ -44,5 +44,6 @@ def s2t_object():
 
 
 results = s2t_object()
-# st.write(results)
-st.write(json_normalize(response.result['results'], "alternatives"))
+st.write(results["results"])
+# [0]["alternatives"][0]["transcript"]
+st.write(json_normalize(results['results'], "alternatives"))
