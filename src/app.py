@@ -1,13 +1,14 @@
 import streamlit as st
+from decouple import config
 import datetime
 import time
 import os
 
 # importing modules for watson
 from ibm_watson import SpeechToTextV1
-import json
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-from decouple import config
+import json
+from pandas.io.json import json_normalize
 
 # Introduction Header
 st.title("Speech to Text")
@@ -31,6 +32,7 @@ st.write('You selected `%s`' % filename)
 
 
 # Creating a speech to text Object
+@st.cache
 def s2t_object():
     auth = IAMAuthenticator(api_key)
     speech2text = SpeechToTextV1(authenticator=auth)
@@ -42,4 +44,5 @@ def s2t_object():
 
 
 results = s2t_object()
-st.write(results)
+# st.write(results)
+st.write(json_normalize(response.result['results'], "alternatives"))
