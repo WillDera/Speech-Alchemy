@@ -101,7 +101,7 @@ st.write(model_id)
 if st.button("Convert to %s" % select_language):
     trans_response = lang_translator.translate(
         text=recognized_text, model_id=model_id)
-    st.write(trans_response)
+    st.write(trans_response.result["translations"][0]["translation"])
 
 # TODO: Test all languages to see which produce readable texts after translation
 # TODO: limit the language options to only those that can produce readable texts
