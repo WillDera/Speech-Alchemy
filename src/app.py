@@ -52,21 +52,38 @@ results = s2t_object()
 # [0]["alternatives"][0]["transcript"]
 st.write(json_normalize(results['results'], "alternatives"))
 
+recognized_texts = []
+for i in range(len(results["results"])):
+    text = results["results"][i]["alternatives"][0]["transcript"]
+    recognized_texts.append(text)
+
+
+# Button to dump text extracted from the audio file
+recognized_text = " ".join(recognized_texts)
+switcher = True
+if switcher == True:
+    if st.button("Display extracted text"):
+        st.success(recognized_text)
+    switcher = not True
+    st.write(switcher)
+else:
+    st.empty()
+
 
 # Setting up the language translation feature
 st.subheader("Language Translation")
 
+
 # section to handle the language options
+# create a language translator object
+auth = IAMAuthenticator(lt_key)
+lang_translator = LanguageTranslatorV3(
+    version=lt_version, authenticator=auth)
+lang_translator.set_service_url(url_lt)
 
 
 @st.cache(suppress_st_warning=True)
 def languages():
-    # create a language translator object
-    auth = IAMAuthenticator(lt_key)
-    lang_translator = LanguageTranslatorV3(
-        version=lt_version, authenticator=auth)
-    lang_translator.set_service_url(url_lt)
-
     # Create select box for the options
     languages = json_normalize(
         lang_translator.list_identifiable_languages().get_result(), "languages")
@@ -78,3 +95,11 @@ st.write(languages())
 
 select_language = st.selectbox("Select language: ", languages())
 st.write("You've selected: ", select_language)
+
+model_id = "en-%s" % select_language
+st.write(model_id)
+
+if st.button("Convert to %s" % select_language):
+    trans_response = lang_translator.translate(
+        text=recognized_text, model_id=model_id)
+    st.write(trans_response)
