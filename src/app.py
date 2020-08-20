@@ -56,6 +56,8 @@ st.write(json_normalize(results['results'], "alternatives"))
 # Setting up the language translation feature
 st.subheader("Language Translation")
 
+# section to handle the language options
+
 
 @st.cache(suppress_st_warning=True)
 def languages():
@@ -68,9 +70,11 @@ def languages():
     # Create select box for the options
     languages = json_normalize(
         lang_translator.list_identifiable_languages().get_result(), "languages")
-    select_language = st.selectbox("Select language: ", languages)
-    return select_language
+    return languages
 
 
-selected_language = languages()
-st.write(selected_language)
+st.write("Below are the language options you can select from.")
+st.write(languages())
+
+select_language = st.selectbox("Select language: ", languages())
+st.write("You've selected: ", select_language)
