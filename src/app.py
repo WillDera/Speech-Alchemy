@@ -52,22 +52,21 @@ results = s2t_object()
 # [0]["alternatives"][0]["transcript"]
 st.write(json_normalize(results['results'], "alternatives"))
 
+
+# Here we get the texts from the results object then push them into the recognized text list
 recognized_texts = []
 for i in range(len(results["results"])):
     text = results["results"][i]["alternatives"][0]["transcript"]
     recognized_texts.append(text)
 
 
-# Button to dump text extracted from the audio file
+# here we merge all strs in the recognized_texts list into one big list.
 recognized_text = " ".join(recognized_texts)
-switcher = True
-if switcher == True:
-    if st.button("Display extracted text"):
-        st.success(recognized_text)
-    switcher = not True
-    st.write(switcher)
-else:
-    st.empty()
+
+
+# Button to dump text extracted from the audio file
+if st.button("Display extracted text"):
+    st.success(recognized_text)
 
 
 # Setting up the language translation feature
@@ -103,3 +102,7 @@ if st.button("Convert to %s" % select_language):
     trans_response = lang_translator.translate(
         text=recognized_text, model_id=model_id)
     st.write(trans_response)
+
+# TODO: Test all languages to see which produce readable texts after translation
+# TODO: limit the language options to only those that can produce readable texts
+# TODO: Shift the language translation and text extraction parts to a different pages using st.sidebar functionality
