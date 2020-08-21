@@ -7,19 +7,25 @@ import json
 from pandas.io.json import json_normalize  # deprecated
 
 
-# Introduction Header
-st.title("Speech to Text")
-
-# Introductory text
-st.markdown(
-    "This application allows you to send in an audio file and the convert it to text in nealry any language")
-
 # env configurations
 url_s2t = config('URL_S2T')
 api_key = config('API_KEY')
 url_lt = config('URL_LT')
 lt_key = config('LT_KEY')
 lt_version = config('LT_VERSION')
+
+
+# Introduction
+st.write(
+    """
+        # My Speech synthesizer
+        
+        This application allows you to extract the text from an audio file and then convert it to text in nealry any language.
+        
+        ## Text Extractor
+    """
+)
+
 
 # Sidebar
 st.sidebar.title("IBM Watson")
@@ -28,7 +34,9 @@ filename = st.sidebar.selectbox(
     'Select a file',
     directory
 )
-st.write('You selected `%s`' % filename)
+
+
+# ------------------------ Text Extraction ---------------------------- #
 
 
 # Creating a speech to text Object
@@ -44,8 +52,8 @@ def s2t_object():
 
 
 results = s2t_object()
-# st.write(results["results"])
-# [0]["alternatives"][0]["transcript"]
+st.write("The table below shows you the extracted text and confidence of the model from `%s`" % filename)
+st.write("You can hover on any of the transcripts to see a preview of the full text")
 st.write(json_normalize(results['results'], "alternatives"))
 
 
@@ -65,11 +73,10 @@ if st.button("Display extracted text"):
     st.success(recognized_text)
 
 
-# Setting up the language translation feature
+# ------------------------ Language Translation ---------------------------- #
 st.subheader("Language Translation")
 
 
-# section to handle the language options
 # create a language translator object
 auth = IAMAuthenticator(lt_key)
 lang_translator = LanguageTranslatorV3(
@@ -85,14 +92,16 @@ def languages():
     return languages
 
 
-st.write("Below are the language options you can select from.")
-st.write(languages())
+st.sidebar.markdown("Below are the language options you can select from.")
+st.sidebar.table(languages())
 
+
+# Get user option for language to be translated to.
 select_language = st.selectbox("Select language: ", languages())
-st.write("You've selected: ", select_language)
 
+
+# set the model_id, from english to the selected language
 model_id = "en-%s" % select_language
-st.write(model_id)
 
 if st.button("Convert to %s" % select_language):
     trans_response = lang_translator.translate(
