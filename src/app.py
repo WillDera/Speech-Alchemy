@@ -18,7 +18,7 @@ lt_version = config('LT_VERSION')
 # Introduction
 st.write(
     """
-        # My Speech synthesizer
+        # My Speech Alchemist
         
         This application allows you to extract the text from an audio file and then convert it to text in nealry any language.
         
@@ -28,7 +28,7 @@ st.write(
 
 
 # Sidebar
-st.sidebar.title("IBM Watson")
+st.sidebar.title("Speech Alchemy")
 directory = os.listdir('.')
 filename = st.sidebar.selectbox(
     'Select a file',
@@ -110,4 +110,3 @@ if st.button("Convert to %s" % select_language):
 
 # TODO: Test all languages to see which produce readable texts after translation
 # TODO: limit the language options to only those that can produce readable texts
-# TODO: Shift the language translation and text extraction parts to a different pages using st.sidebar functionality
