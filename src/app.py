@@ -25,13 +25,11 @@ lt_key = config('LT_KEY')
 lt_version = config('LT_VERSION')
 
 
-def file_selector(folder_path='.'):
-    filenames = os.listdir(folder_path)
-    selected_filename = st.selectbox('Select a file', filenames)
-    return os.path.join(folder_path, selected_filename)
-
-
-filename = file_selector()
+directory = os.listdir('.')
+filename = st.sidebar.selectbox(
+    'Select a file',
+    directory
+)
 st.write('You selected `%s`' % filename)
 
 
