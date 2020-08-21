@@ -1,15 +1,11 @@
 import streamlit as st
 from decouple import config
-import datetime
-import time
 import os
-
-# importing modules for watson
 from ibm_watson import SpeechToTextV1, LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import json
 from pandas.io.json import json_normalize  # deprecated
-# from pandas.json_normalize import json_normalize
+
 
 # Introduction Header
 st.title("Speech to Text")
@@ -18,13 +14,15 @@ st.title("Speech to Text")
 st.markdown(
     "This application allows you to send in an audio file and the convert it to text in nealry any language")
 
+# env configurations
 url_s2t = config('URL_S2T')
 api_key = config('API_KEY')
 url_lt = config('URL_LT')
 lt_key = config('LT_KEY')
 lt_version = config('LT_VERSION')
 
-
+# Sidebar
+st.sidebar.title("IBM Watson")
 directory = os.listdir('.')
 filename = st.sidebar.selectbox(
     'Select a file',
