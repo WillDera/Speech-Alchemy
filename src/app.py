@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 from decouple import config
 import os
 from ibm_watson import SpeechToTextV1, LanguageTranslatorV3
@@ -6,6 +7,14 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import json
 from pandas.io.json import json_normalize  # deprecated
 
+
+# Reading the dataset
+@st.cache
+def get_data():
+    return pd.read_csv('language_names_and_codes.csv')
+
+
+df = get_data()
 
 # env configurations
 url_s2t = config('URL_S2T')
@@ -87,9 +96,8 @@ lang_translator.set_service_url(url_lt)
 @st.cache(suppress_st_warning=True)
 def languages():
     # Create select box for the options
-    languages = json_normalize(
-        lang_translator.list_identifiable_languages().get_result(), "languages")
-    return languages
+    languages = df
+    return "Hello"
 
 
 st.sidebar.markdown("Below are the language options you can select from.")
@@ -108,5 +116,4 @@ if st.button("Convert to %s" % select_language):
         text=recognized_text, model_id=model_id)
     st.write(trans_response.result["translations"][0]["translation"])
 
-# TODO: Test all languages to see which produce readable texts after translation
 # TODO: limit the language options to only those that can produce readable texts
