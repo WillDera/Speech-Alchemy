@@ -93,23 +93,20 @@ lang_translator = LanguageTranslatorV3(
 lang_translator.set_service_url(url_lt)
 
 
-@st.cache(suppress_st_warning=True)
-def languages():
-    # Create select box for the options
-    languages = df
-    return "Hello"
-
-
 st.sidebar.markdown("Below are the language options you can select from.")
-st.sidebar.table(languages())
+st.sidebar.table(df)
 
 
 # Get user option for language to be translated to.
-select_language = st.selectbox("Select language: ", languages())
+languages_names = [i for i in df["Language Name"]]
+select_language = st.selectbox("Select language: ", languages_names)
 
 
 # set the model_id, from english to the selected language
-model_id = "en-%s" % select_language
+index = languages_names.index(select_language)
+languages_codes = [j for j in df["Language Code"]]
+id = languages_codes[index]
+model_id = "en-%s" % id
 
 if st.button("Convert to %s" % select_language):
     trans_response = lang_translator.translate(
