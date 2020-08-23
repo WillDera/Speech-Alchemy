@@ -97,14 +97,18 @@ st.sidebar.markdown("Below are the language options you can select from.")
 st.sidebar.table(df)
 
 
-# Get user option for language to be translated to.
+# Display user options for language to be translated to.
+# created a list from the dataset "Language Name" column
 languages_names = [i for i in df["Language Name"]]
 select_language = st.selectbox("Select language: ", languages_names)
 
 
 # set the model_id, from english to the selected language
+# get index of selected option from the "Language Name" list
 index = languages_names.index(select_language)
+# create a list from the dataset "Language Code" column
 languages_codes = [j for j in df["Language Code"]]
+# setting the id to the corresponding value of the Language code using the Language Name location
 id = languages_codes[index]
 model_id = "en-%s" % id
 
@@ -112,5 +116,3 @@ if st.button("Convert to %s" % select_language):
     trans_response = lang_translator.translate(
         text=recognized_text, model_id=model_id)
     st.write(trans_response.result["translations"][0]["translation"])
-
-# TODO: limit the language options to only those that can produce readable texts
