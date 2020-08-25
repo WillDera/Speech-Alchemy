@@ -97,13 +97,13 @@ st.sidebar.markdown("Below are the language options you can select from.")
 st.sidebar.table(df)
 
 
-# Display user options for language to be translated to.
+# ------------------------ Display user options for language to be translated to. ------------------------ #
 # created a list from the dataset "Language Name" column
 languages_names = [i for i in df["Language Name"]]
 select_language = st.selectbox("Select language: ", languages_names)
 
 
-# set the model_id, from english to the selected language
+# ------------------------ set the model_id, from english to the selected language ------------------------ #
 # get index of selected option from the "Language Name" list
 index = languages_names.index(select_language)
 # create a list from the dataset "Language Code" column
