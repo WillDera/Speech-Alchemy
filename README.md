@@ -1,4 +1,4 @@
-# streamlit_speech2text
+# Speech Alchemy
  
 <p>This web app extracts text from an mp3 file and then gives users the freedom to convert the extracted text into a language from a given set of options.</p>
 
